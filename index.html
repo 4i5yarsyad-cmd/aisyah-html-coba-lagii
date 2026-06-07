@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Siswa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fcfbf7 0%, #f4eae1 50%, #e8d8c8 100%); 
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Dekorasi Tanaman & Bunga Matahari Menjalar (Tetap Ramai di Samping) */
+        .vine-left, .vine-right {
+            position: absolute;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; 
+            padding: 15px 0;
+            font-size: 28px;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .vine-left { left: 20px; }
+        .vine-right { right: 20px; }
+
+        .vine-left .fa-leaf, .vine-left .fa-seedling,
+        .vine-right .fa-leaf, .vine-right .fa-seedling {
+            color: #729777;
+            opacity: 0.85;
+            transform: rotate(15deg);
+        }
+        
+        .vine-left .fa-sun, .vine-right .fa-sun {
+            color: #f4a261;
+            text-shadow: 0 0 8px #e9c46a;
+            opacity: 0.95;
+            animation: pulse 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.15); }
+        }
+
+        /* Animasi Hujan Elemen Berguguran (Ritme Diperlambat) */
+        .flower {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 25px;
+            text-align: center;
+            animation: fadeDown 1s ease;
+            z-index: 2;
+        }
+        header h1 {
+            font-size: 38px;
+            color: #5c4033; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        header p {
+            color: #8c7863; 
+            margin-top: 8px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        @keyframes fadeDown {
+            from { opacity: 0; transform: translateY(-40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Card (Kotak Putih dengan Tambahan Dekorasi) */
+        .card {
+            width: 380px;
+            padding: 30px;
+            border-radius: 25px;
+            text-align: center;
+            color: #5c4033; 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            z-index: 2;
+            box-shadow: 0 15px 35px rgba(139, 115, 85, 0.15); 
+            position: relative; /* Diperlukan agar dekorasi bintang dalam kotak rapi */
+            overflow: hidden;
+        }
+
+        /* TAMBAHAN: Efek Bintang Berkedip Bergantian di Kotak Putih */
+        .card-sparkle-1, .card-sparkle-2 {
+            position: absolute;
+            font-size: 18px;
+            color: #e9c46a;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .card-sparkle-1 {
+            top: 20px;
+            left: 20px;
+            animation: twinkle 3s infinite ease-in-out;
+        }
+        .card-sparkle-2 {
+            bottom: 60px;
+            right: 25px;
+            animation: twinkle 3s infinite ease-in-out 1.5s; /* Delay 1.5s agar muncul bergantian */
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.6) rotate(0deg); }
+            50% { opacity: 0.8; transform: scale(1.1) rotate(180deg); }
+        }
+
+        /* Foto */
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 4px solid #e9c46a; 
+            object-fit: cover;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        /* Nama */
+        .card h2 {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #e76f51; 
+        }
+
+        /* Deskripsi */
+        .desc {
+            font-size: 15px;
+            line-height: 1.8;
+            margin-top: 10px;
+            color: #6f5643;
+        }
+        .desc b {
+            color: #e76f51;
+        }
+
+        /* Quote */
+        .quote {
+            margin-top: 20px;
+            font-style: italic;
+            font-size: 14px;
+            color: #8c7355;
+            background: rgba(233, 196, 106, 0.15); 
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 3px solid #e9c46a;
+        }
+
+        /* Sosial Media */
+        .social {
+            margin-top: 25px;
+        }
+        .social a {
+            text-decoration: none;
+            color: #8c7355;
+            font-size: 24px;
+            margin: 0 10px;
+            transition: 0.3s;
+        }
+        .social a:hover {
+            color: #e9c46a; 
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="flower-container"></div>
+
+    <div class="vine-left">
+        <i class="fas fa-sun" title="Sunflower"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-seedling"></i>
+        <i class="fas fa-sun" title="Sunflower"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-seedling"></i>
+        <i class="fas fa-sun" title="Sunflower"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-sun" title="Sunflower"></i>
+    </div>
+
+    <div class="vine-right">
+        <i class="fas fa-sun" title="Sunflower"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-sun" title="Sunflower"></i>
+        <i class="fas fa-seedling"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-sun" title="Sunflower"></i>
+        <i class="fas fa-seedling"></i>
+        <i class="fas fa-leaf"></i>
+        <i class="fas fa-sun" title="Sunflower"></i>
+    </div>
+
+    <header>
+        <h1>Profile Diri Siswa</h1>
+        <p>🌻 Kreatif ● Berani ● Farmasi 🌻</p>
+    </header>
+    
+    <div class="card">
+        <div class="card-sparkle-1">✨</div>
+        <div class="card-sparkle-2">✨</div>
+
+        <img src="Screenshot_20260607_134245_Gallery.jpg" alt="Foto Profil" class="profile-img">
+        <h2>Aisyah</h2>
+        <div class="desc">
+            <p><b>Kelas:</b> X-A Farmasi </p>
+            <p><b>Sekolah:</b> SMKS Kesehatan Yannas Husada Bangkalan</p>
+            <p><b>Hobi:</b> Menonton</p>
+        </div>
+        <div class="quote">
+            "Impian kamu hari ini adalah kenyataan masa depan jika kamu memiliki keberanian untuk mewujudkannya."
+        </div>
+        <div class="social">
+            <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" title="TikTok"><i class="fab fa-tiktok"></i></a>
+            <a href="#" title="X (Twitter)"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="#" title="Github"><i class="fab fa-github"></i></a>
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('flower-container');
+        
+        // Kumpulan objek falling effect (bunga matahari tetap mendominasi)
+        const sunflowerPool = ['🌻', '🌻', '🌻', '🌿', '🌻', '🍂', '🌻', '🍁', '✨', '🌻']; 
+        
+        function createFlower() {
+            const flower = document.createElement('div');
+            flower.className = 'flower';
+            
+            const chosenIcon = sunflowerPool[Math.floor(Math.random() * sunflowerPool.length)];
+            flower.innerText = chosenIcon;
+            
+            if (chosenIcon === '🌻') {
+                flower.style.fontSize = Math.random() * 16 + 18 + 'px'; 
+            } else if (chosenIcon === '🍂' || chosenIcon === '🍁') {
+                flower.style.fontSize = Math.random() * 10 + 16 + 'px'; 
+            } else {
+                flower.style.fontSize = '18px';
+            }
+            
+            flower.style.left = Math.random() * 100 + 'vw';
+            
+            // UBAH: Waktu jatuh diperlama (antara 5 sampai 9 detik) agar terkesan lambat dan lembut
+            flower.style.animationDuration = Math.random() * 4 + 5 + 's'; 
+            flower.style.opacity = Math.random() * 0.4 + 0.5; 
+            
+            container.appendChild(flower);
+            
+            // Waktu hapus disesuaikan dengan durasi animasi yang lebih lambat
+            setTimeout(() => {
+                flower.remove();
+            }, 9000);
+        }
+
+        // UBAH: Ritme kemunculan diperlambat dari 200ms menjadi 600ms agar turunnya tidak terlalu padat
+        setInterval(createFlower, 600);
+    </script>
+</body>
+</html>
+
